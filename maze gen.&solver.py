@@ -33,9 +33,9 @@ YELLOW = (255, 255, 0)
 CYAN = (0, 255, 255)
 
 # Window setup
-WIDTH = 600     #Window size (won't affect maze size, just cell size)                                                  
-ROWS = 20       #Number of rows/columns in the maze (maze will be ROWS x ROWS)
-delay = 5      #Delay in milliseconds for animation speed
+WIDTH = 1000     #Window size (won't affect maze size, just cell size)                                                  
+ROWS = 5       #Number of rows/columns in the maze (maze will be ROWS x ROWS)
+delay = 1000      #Delay in milliseconds for animation speed
 GAP = WIDTH // ROWS
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Maze Generator & Solver")
@@ -178,8 +178,8 @@ def generate_maze(grid, draw, start):
                 pygame.quit()
         
         pygame.time.delay(delay)  # Animation delay
-        #This is where the animation happens - we mark the current cell, draw, and then delay before moving on to the next step
 
+        #This is where the animation happens - we mark the current cell, draw, and then delay before moving on to the next step
         neighbors = [n for n in get_neighbors(grid, current) if not n.visited]      #Get unvisited neighbors
         if neighbors:
             next = random.choice(neighbors)
@@ -204,6 +204,9 @@ def h(p1, p2):
 #if the Maze is solved successfully, we reconstruct the path from the end to the start using the came_from dictionary, marking the path cells in bright yellow and adding a delay for animation.
 def reconstruct_path(came_from, current, draw):
     while current in came_from:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
         current = came_from[current]
         current.make_path()
         draw()
